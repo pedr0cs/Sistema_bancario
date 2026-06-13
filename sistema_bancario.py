@@ -20,12 +20,27 @@ def exibir_cabecalho(titulo: str) -> None:
     print(f"{separador}\n")
 
 
-def exibir_menu(saldo, saques_realizados_hoje):
+# --- MENUS SEPARADOS ---
+
+def exibir_menu_principal():
+    separador = "-" * LARGURA_TELA
+    print(f"\n{separador}")
+    print(f"{'MENU PRINCIPAL - ADMINISTRAÇÃO':^{LARGURA_TELA}}")
+    print(separador)
+    print("  [1]   Criar Usuário")
+    print("  [2]   Criar Conta Corrente")
+    print("  [3]   Listar Contas")
+    print("  [4]   Acessar Operações Bancárias")
+    print("  [0]   Sair do Sistema")
+    print(f"{separador}\n")
+
+
+def exibir_menu_operacoes(saldo, saques_realizados_hoje):
     saques_restantes = LIMITE_SAQUES_DIARIOS - saques_realizados_hoje
     separador = "-" * LARGURA_TELA
 
     print(f"\n{separador}")
-    print(f"{'BANCO DIGITAL':^{LARGURA_TELA}}")
+    print(f"{'OPERAÇÕES BANCÁRIAS':^{LARGURA_TELA}}")
     print(separador)
     print(f"   Saldo disponível:      {formatar_moeda(saldo)}")
     print(f"   Saques restantes hoje: {saques_restantes}")
@@ -33,10 +48,7 @@ def exibir_menu(saldo, saques_realizados_hoje):
     print("  [1]   Depositar")
     print("  [2]   Sacar")
     print("  [3]   Extrato")
-    print("  [4]   Criar Usuário")
-    print("  [5]   Criar Conta Corrente")
-    print("  [6]   Listar Contas")
-    print("  [0]   Sair")
+    print("  [0]   Voltar ao Menu Principal")
     print(f"{separador}\n")
 
 
@@ -167,7 +179,7 @@ def criar_usuario(usuarios):
     nome = input("   Nome completo: ").strip()
     data_nascimento = input("   Data de nascimento (dd/mm/aaaa): ").strip()
     
-    print("\n  Informe o endereço:")
+    print("\n   Informe o endereço:")
     logradouro = input("    Logradouro (Rua/Av): ").strip()
     numero = input("    Número: ").strip()
     bairro = input("    Bairro: ").strip()
@@ -266,49 +278,62 @@ def main() -> None:
             saques_realizados_hoje, data_referencia_saques
         )
         
-        exibir_menu(saldo, saques_realizados_hoje)
+        exibir_menu_principal()
         opcao = ler_opcao_menu()
 
         if opcao == "1":
-            limpar_tela()
-            exibir_cabecalho("   DEPÓSITO")
-            valor = ler_valor_dinheiro("   Informe o valor do depósito: R$ ")
-            if valor is not None:
-                saldo, extrato = realizar_deposito(saldo, valor, extrato)
-
-        elif opcao == "2":
-            limpar_tela()
-            exibir_cabecalho("   SAQUE")
-            valor = ler_valor_dinheiro("   Informe o valor do saque: R$ ")
-            if valor is not None:
-                saldo, extrato, saques_realizados_hoje = realizar_saque(
-                    saldo=saldo,
-                    valor=valor,
-                    extrato=extrato,
-                    limite=LIMITE_VALOR_SAQUE,
-                    numero_saques=saques_realizados_hoje,
-                    limite_saques=LIMITE_SAQUES_DIARIOS
-                )
-
-        elif opcao == "3":
-            exibir_extrato(saldo, extrato=extrato)
-
-        elif opcao == "4":
             criar_usuario(usuarios)
 
-        elif opcao == "5":
+        elif opcao == "2":
             retorno_conta = criar_conta_corrente(usuarios, contas, proximo_numero_conta)
             if retorno_conta is not None:
                 proximo_numero_conta = retorno_conta
 
-        elif opcao == "6":
+        elif opcao == "3":
             listar_contas(contas)
+
+        elif opcao == "4":
+            while True:
+                limpar_tela()
+                exibir_menu_operacoes(saldo, saques_realizados_hoje)
+                opcao_banco = ler_opcao_menu()
+
+                if opcao_banco == "1":
+                    limpar_tela()
+                    exibir_cabecalho("   DEPÓSITO")
+                    valor = ler_valor_dinheiro("   Informe o valor do depósito: R$ ")
+                    if valor is not None:
+                        saldo, extrato = realizar_deposito(saldo, valor, extrato)
+
+                elif opcao_banco == "2":
+                    limpar_tela()
+                    exibir_cabecalho("   SAQUE")
+                    valor = ler_valor_dinheiro("   Informe o valor do saque: R$ ")
+                    if valor is not None:
+                        saldo, extrato, saques_realizados_hoje = realizar_saque(
+                            saldo=saldo,
+                            valor=valor,
+                            extrato=extrato,
+                            limite=LIMITE_VALOR_SAQUE,
+                            numero_saques=saques_realizados_hoje,
+                            limite_saques=LIMITE_SAQUES_DIARIOS
+                        )
+
+                elif opcao_banco == "3":
+                    exibir_extrato(saldo, extrato=extrato)
+
+                elif opcao_banco == "0":
+                    break
+                else:
+                    print("    Opção inválida. Escolha entre 0 e 3.")
+                
+                input("\n   Pressione ENTER para continuar...")
 
         elif opcao == "0":
             encerrar_sistema()
             break
         else:
-            print("    Opção inválida. Escolha uma opção entre 0 e 6.")
+            print("    Opção inválida. Escolha uma opção entre 0 e 4.")
 
         input("\n   Pressione ENTER para continuar...")
         limpar_tela()
