@@ -1,7 +1,7 @@
 #  Sistema Bancário Otimizado 
 Desafio do bootcamp de Python da DIO. Esse projeto consiste em um sistema bancário simples.
 
-## 🛠️ Tecnologias e Conceitos Aplicados
+# Tecnologias e Conceitos Aplicados
 *Python
 
 # Operações Financeiras
