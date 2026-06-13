@@ -20,8 +20,6 @@ def exibir_cabecalho(titulo: str) -> None:
     print(f"{separador}\n")
 
 
-# --- MENUS SEPARADOS ---
-
 def exibir_menu_principal():
     separador = "-" * LARGURA_TELA
     print(f"\n{separador}")
