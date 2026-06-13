@@ -25,7 +25,7 @@ def exibir_cabecalho(titulo: str) -> None:
 def exibir_menu_principal():
     separador = "-" * LARGURA_TELA
     print(f"\n{separador}")
-    print(f"{'MENU PRINCIPAL - ADMINISTRAÇÃO':^{LARGURA_TELA}}")
+    print(f"{'MENU PRINCIPAL':^{LARGURA_TELA}}")
     print(separador)
     print("  [1]   Criar Usuário")
     print("  [2]   Criar Conta Corrente")
